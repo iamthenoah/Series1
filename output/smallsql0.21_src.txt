@@ -1,0 +1,51 @@
+======= Java Project Analysis =======
+
+- Analyzing project: |project://smallsql0.21_src| (186 Java files)
+
+--- Volume
+
+  Code LOC:                24049
+  Comment LOC:             8980
+  Blank LOC:               5394
+  Total LOC:               38423
+  SIG Rating:              ++
+
+--- Duplication
+
+  Duplicated Lines:        1710
+  Percentage:              7.1%
+  SIG Rating:              +
+
+--- Unit Size
+
+  Total Units:             2415
+  Average:                 7.1
+  SIG Rating:              ++
+
+  Risk Profile:
+    small: 2011 (83.3%)
+    medium: 298 (12.3%)
+    large: 81 (3.4%)
+    veryLarge: 25 (1.0%)
+
+--- Unit Complexity
+
+  Total Units:             2415
+  Average:                 2.5
+  SIG Rating:              ++
+
+  Risk Profile:
+    low: 2336 (96.7%)
+    moderate: 42 (1.7%)
+    high: 31 (1.3%)
+    veryHigh: 6 (0.2%)
+
+--- Maintainability Aspects
+
+  Analysability:           ++
+  Changeability:           ++
+  Testability:             ++
+  ---
+  Maintainability:         ++
+
+======= ===================== =======

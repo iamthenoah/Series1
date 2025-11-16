@@ -1,0 +1,51 @@
+======= Java Project Analysis =======
+
+- Analyzing project: |project://hsqldb-2.3.1| (547 Java files)
+
+--- Volume
+
+  Code LOC:                172360
+  Comment LOC:             74938
+  Blank LOC:               56829
+  Total LOC:               304127
+  SIG Rating:              +
+
+--- Duplication
+
+  Duplicated Lines:        20848
+  Percentage:              12.1%
+  SIG Rating:              o
+
+--- Unit Size
+
+  Total Units:             11032
+  Average:                 11.1
+  SIG Rating:              +
+
+  Risk Profile:
+    small: 8166 (74.0%)
+    medium: 1961 (17.8%)
+    large: 586 (5.3%)
+    veryLarge: 319 (2.9%)
+
+--- Unit Complexity
+
+  Total Units:             11032
+  Average:                 3.2
+  SIG Rating:              ++
+
+  Risk Profile:
+    low: 10514 (95.3%)
+    moderate: 342 (3.1%)
+    high: 140 (1.3%)
+    veryHigh: 36 (0.3%)
+
+--- Maintainability Aspects
+
+  Analysability:           +
+  Changeability:           +
+  Testability:             ++
+  ---
+  Maintainability:         +
+
+======= ===================== =======
