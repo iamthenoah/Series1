@@ -238,13 +238,95 @@ SIG uses a large benchmark set to calibrate thresholds. Our thresholds are handâ
 
 ---
 
-## **6. Results Summary for smallsql & hsqldb (â‰ˆ250 words + table)**
+## **6. Results Summary for smallsql & hsqldb**
 
-We applied the four metrics to **smallsql** and **hsqldb**.
+We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the results along with an assessment (for a more detailed overview of the SIG results, please refer to the output files directly).
+
+### **smallsql0.21_src Analysis**
+
+**Volume Analysis**
+- **Code LOC**: 24,049
+- **Comment LOC**: 8,980 (37.3% comment ratio)
+- **Total LOC**: 38,423
+- **SIG Rating**: ++ (Excellent)
+
+**Assessment**: The project maintains optimal size with strong comment coverage, whcih means they are using good documentation practices.
+
+**Duplication Analysis**
+- **Duplicated Lines**: 1,710
+- **Percentage**: 7.1%
+- **SIG Rating**: + (Good)
+
+**Assessment**: Duplication levels are controlled and within an acceptable limit.
+
+**Unit Size Distribution**
+- **Total Units**: 2,415
+- **Average Size**: 7.1 LOC
+- **SIG Rating**: ++ (Excellent)
+- **Risk Profile**: 83.3% small units, only 1.0% very large units
+
+**Assessment**: Exceptional size distribution with minimal large units, promoting readability.
+
+**Unit Complexity Analysis**
+- **Total Units**: 2,415
+- **Average Complexity**: 2.5
+- **SIG Rating**: ++ (Excellent)
+- **Risk Profile**: 96.7% low complexity, only 0.2% very high complexity
+
+**Assessment**: Outstanding complexity management with nearly all units in low complexity category.
+
+**Maintainability Aspects**
+- **Analysability**: ++
+- **Changeability**: ++
+- **Testability**: ++
+- **Overall Maintainability**: ++
+
+---
+
+### **hsqldb-2.3.1 Analysis**
+
+**Volume Analysis**
+- **Code LOC**: 172,360
+- **Comment LOC**: 74,938 (43.5% comment ratio)
+- **Total LOC**: 304,127
+- **SIG Rating**: + (Good)
+
+**Assessment**: Large-scale project with comment coverage. Due to the size of this project, there are going to be some challenges when it comes to maintainence.
+
+**Duplication Analysis**
+- **Duplicated Lines**: 20,848
+- **Percentage**: 12.1%
+- **SIG Rating**: o (Adequate)
+
+**Assessment**: Duplication levels are concerning and can represent significant technical debt requiring refactoring.
+
+**Unit Size Distribution**
+- **Total Units**: 11,032
+- **Average Size**: 11.1 LOC
+- **SIG Rating**: + (Good)
+- **Risk Profile**: 74.0% small units, 2.9% very large units
+
+**Assessment**: Generally good size distribution, though the 2.9% very large units warrant attention.
+
+**Unit Complexity Analysis**
+- **Total Units**: 11,032
+- **Average Complexity**: 3.2
+- **SIG Rating**: ++ (Excellent)
+- **Risk Profile**: 95.3% low complexity, 0.3% very high complexity
+
+**Assessment**: Excellent complexity control despite project scale, with strong adherence to simplicity principles.
+
+**Maintainability Aspects**
+- **Analysability**: +
+- **Changeability**: +
+- **Testability**: ++
+- **Overall Maintainability**: +
+
+---
+
+### **Comapring both results**
 
 Overall, hsqldb is larger and more complex, while smallsql is more compact but shows some duplication in utility code.
-
-### **Metric Results**
 
 | Metric                  | smallsql            | hsqldb                         |
 | ----------------------- | ------------------- | ------------------------------ |
