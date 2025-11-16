@@ -2,7 +2,7 @@
 
 In this assignment we implemented four metrics that together give a basic picture of maintainability: **Volume**, **Unit Size**, **Unit Complexity**, and **Duplication**. These metrics follow the ideas from the Software Improvement Group (SIG), where simple source‑code properties are used as indicators for how easy a system is to understand and change.
 
-Each metric produces both a raw value and an aggregated view. For Unit Size and Unit Complexity we also build risk profiles by grouping units into simple buckets (small, medium, large, very large / low, moderate, high, very high). The actual ratings that feed into maintainability are based on the *average* size or complexity.
+Each metric produces both a raw value and an aggregated view. For Unit Size and Unit Complexity we also build risk profiles by grouping units into simple buckets (small, medium, large, very large / low, moderate, high, very high). The actual ratings that feed into maintainability are based on the _average_ size or complexity.
 
 The implementation tries to stay close to SIG’s practical model: collect objective counts, classify them with clear rules, and aggregate them into final ratings for the different maintainability aspects.
 
@@ -29,7 +29,7 @@ We treat comment lines quite precisely. A line is a comment if it:
 
 We omit a separate type (hybrid) for a comment at the end of the line of code, as it would not influence the results of the classification.
 
-We keep a simple `inMultiLineComment` flag to follow comment blocks that span multiple lines. Unlike the normalization step in the duplication metric, here we do *not* remove comment or blank lines; we just classify them. The **code** line count is then used to look up a SIG‑style rating on a fixed scale (very small systems get `++`, very large systems get `--`).
+We keep a simple `inMultiLineComment` flag to follow comment blocks that span multiple lines. Unlike the normalization step in the duplication metric, here we do _not_ remove comment or blank lines; we just classify them. The **code** line count is then used to look up a SIG‑style rating on a fixed scale (very small systems get `++`, very large systems get `--`).
 
 This rating later contributes to the Changeability aspect.
 
@@ -49,14 +49,14 @@ This gives us a list of sizes for all units.
 
 We then classify each unit into a size bucket using the thresholds from the code:
 
-- **small**: 0–10 statements  
-- **medium**: 11–30  
-- **large**: 31–60  
-- **veryLarge**: 61+  
+- **small**: 0–10 statements
+- **medium**: 11–30
+- **large**: 31–60
+- **veryLarge**: 61+
 
 These buckets roughly correspond to low, moderate, high, and very high risk. The risk profile is just a count of how many units fall into each bucket.
 
-However, the **rating** that we actually use later is based on the *average* unit size. We compare the average against another fixed scale and assign one of the five SIG‑style ratings (`++`, `+`, `o`, `-`, `--`).
+However, the **rating** that we actually use later is based on the _average_ unit size. We compare the average against another fixed scale and assign one of the five SIG‑style ratings (`++`, `+`, `o`, `-`, `--`).
 
 Unit Size feeds into all three aspects (Analysability, Changeability, and Testability) through different weights.
 
@@ -83,12 +83,12 @@ At the moment we do **not** count conditional operators (`?:`) or logical operat
 
 Once we have a complexity value for each unit, we classify them into buckets using:
 
-- **low**: 0–10  
-- **moderate**: 11–20  
-- **high**: 21–50  
-- **veryHigh**: 51+  
+- **low**: 0–10
+- **moderate**: 11–20
+- **high**: 21–50
+- **veryHigh**: 51+
 
-Again, we build a risk profile (how many units in each bucket), but the **rating** used for maintainability is based on the *average* complexity over all units, compared against a fixed scale from `++` to `--`.
+Again, we build a risk profile (how many units in each bucket), but the **rating** used for maintainability is based on the _average_ complexity over all units, compared against a fixed scale from `++` to `--`.
 
 Complexity mainly influences Analysability and Testability.
 
@@ -108,7 +108,7 @@ We use a **line‑based sliding window** approach with the following steps:
 3. From this cleaned list we build windows of **6 consecutive lines** (so the block size `k` is 6, not 5).
 4. For each 6‑line block we store it in a map that records all locations where that exact block occurs.
 
-After collecting all blocks from all files, we look at the blocks that appear at least twice. For each occurrence of such a block we mark the covered line indices as duplicated in a set for that file. At the end we count how many unique duplicated line indices there are per file and sum them. 
+After collecting all blocks from all files, we look at the blocks that appear at least twice. For each occurrence of such a block we mark the covered line indices as duplicated in a set for that file. At the end we count how many unique duplicated line indices there are per file and sum them.
 
 Because each duplicated region appears in at least two places, we would effectively count the same logical duplicated lines twice. To correct for this, we divide the duplicated line count by 2 before reporting it. (maybe add that just divide by 2 could be improved) We then divide by the total number of normalized lines to get the **duplication percentage**, and we map that percentage to a `++`–`--` rating using a simple threshold table.
 
@@ -131,15 +131,15 @@ To turn raw metric values into quality scores, we follow the SIG‑style structu
   We use the duplication percentage and compare it to another scale. Low duplication gets `++`, and high duplication gets `--`.
 
 - **Unit Size** and **Unit Complexity**  
-  For these we first compute the *average* size and *average* complexity across all units. We then compare each average value against its own scale to get a rating between `++` and `--`. The risk profiles (buckets) do not change the rating directly, but if many units are large or complex, the average will naturally go up.
+  For these we first compute the _average_ size and _average_ complexity across all units. We then compare each average value against its own scale to get a rating between `++` and `--`. The risk profiles (buckets) do not change the rating directly, but if many units are large or complex, the average will naturally go up.
 
 Internally we convert these ratings to numeric scores so we can combine them:
 
-- `++` → 4  
-- `+`  → 3  
-- `o`  → 2  
-- `-`  → 1  
-- `--` → 0  
+- `++` → 4
+- `+` → 3
+- `o` → 2
+- `-` → 1
+- `--` → 0
 
 ### **From ratings to maintainability aspects**
 
@@ -150,20 +150,21 @@ We compute three aspects using weighted averages of these numeric scores:
 
 - **Changeability**  
   Uses all four metrics:
-  - Unit Size: 0.30  
-  - Unit Complexity: 0.20  
-  - Duplication: 0.30  
-  - Volume: 0.20  
+
+  - Unit Size: 0.30
+  - Unit Complexity: 0.20
+  - Duplication: 0.30
+  - Volume: 0.20
 
 - **Testability**  
   Uses Unit Size and Unit Complexity, each with weight 0.50.
 
 For each aspect we multiply every metric score by its weight, sum them, and get a real number between 0 and 4. We then map this back to a rating:
 
-- ≥ 3.5 → `++`  
-- ≥ 2.5 → `+`  
-- ≥ 1.5 → `o`  
-- ≥ 0.5 → `-`  
+- ≥ 3.5 → `++`
+- ≥ 2.5 → `+`
+- ≥ 1.5 → `o`
+- ≥ 0.5 → `-`
 - otherwise → `--`
 
 ### **Overall maintainability**
@@ -201,9 +202,9 @@ For Volume and Complexity we compared some results against IntelliJ’s built‑
 
 We also crafted a few methods on purpose:
 
-- A tiny method with 3 statements  
-- A medium method with about 25 statements  
-- A very large method with more than 120 statements  
+- A tiny method with 3 statements
+- A medium method with about 25 statements
+- A very large method with more than 120 statements
 
 The size and complexity buckets behaved as we expected. For duplication, we tested two files that share the same 7‑line block. The 6‑line windows inside that block were detected as duplicates, and when we changed one line, duplication dropped to zero.
 
@@ -234,7 +235,7 @@ A more advanced clone detector (for example token‑based or AST‑based) would 
 
 ### **4. Calibration differences**
 
-SIG uses a large benchmark set to calibrate thresholds. Our thresholds are hand‑picked and only roughly inspired by their ranges. This means the ratings are good for relative comparisons between projects analysed with *this* tool, but the absolute labels (“good”, “bad”) should be taken with care.
+SIG uses a large benchmark set to calibrate thresholds. Our thresholds are hand‑picked and only roughly inspired by their ranges. This means the ratings are good for relative comparisons between projects analysed with _this_ tool, but the absolute labels (“good”, “bad”) should be taken with care.
 
 ---
 
@@ -245,6 +246,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 ### **smallsql0.21_src Analysis**
 
 **Volume Analysis**
+
 - **Code LOC**: 24,049
 - **Comment LOC**: 8,980 (37.3% comment ratio)
 - **Total LOC**: 38,423
@@ -253,6 +255,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: The project maintains optimal size with strong comment coverage, whcih means they are using good documentation practices.
 
 **Duplication Analysis**
+
 - **Duplicated Lines**: 1,710
 - **Percentage**: 7.1%
 - **SIG Rating**: + (Good)
@@ -260,6 +263,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Duplication levels are controlled and within an acceptable limit.
 
 **Unit Size Distribution**
+
 - **Total Units**: 2,415
 - **Average Size**: 7.1 LOC
 - **SIG Rating**: ++ (Excellent)
@@ -268,6 +272,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Exceptional size distribution with minimal large units, promoting readability.
 
 **Unit Complexity Analysis**
+
 - **Total Units**: 2,415
 - **Average Complexity**: 2.5
 - **SIG Rating**: ++ (Excellent)
@@ -276,6 +281,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Outstanding complexity management with nearly all units in low complexity category.
 
 **Maintainability Aspects**
+
 - **Analysability**: ++
 - **Changeability**: ++
 - **Testability**: ++
@@ -286,6 +292,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 ### **hsqldb-2.3.1 Analysis**
 
 **Volume Analysis**
+
 - **Code LOC**: 172,360
 - **Comment LOC**: 74,938 (43.5% comment ratio)
 - **Total LOC**: 304,127
@@ -294,6 +301,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Large-scale project with comment coverage. Due to the size of this project, there are going to be some challenges when it comes to maintainence.
 
 **Duplication Analysis**
+
 - **Duplicated Lines**: 20,848
 - **Percentage**: 12.1%
 - **SIG Rating**: o (Adequate)
@@ -301,6 +309,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Duplication levels are concerning and can represent significant technical debt requiring refactoring.
 
 **Unit Size Distribution**
+
 - **Total Units**: 11,032
 - **Average Size**: 11.1 LOC
 - **SIG Rating**: + (Good)
@@ -309,6 +318,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Generally good size distribution, though the 2.9% very large units warrant attention.
 
 **Unit Complexity Analysis**
+
 - **Total Units**: 11,032
 - **Average Complexity**: 3.2
 - **SIG Rating**: ++ (Excellent)
@@ -317,6 +327,7 @@ We applied the four metrics to **smallsql** and **hsqldb**. Here is some of the 
 **Assessment**: Excellent complexity control despite project scale, with strong adherence to simplicity principles.
 
 **Maintainability Aspects**
+
 - **Analysability**: +
 - **Changeability**: +
 - **Testability**: ++
@@ -364,4 +375,3 @@ The main limitation of our implementation is that the thresholds and weights are
 Another improvement would be to use a token‑based or AST‑based clone detector, so duplication is measured more precisely. For complexity, building a real control‑flow graph and counting all decision points (including `?:`, `&&`, and `||`) would get us closer to the textbook definition.
 
 Still, even in this simplified form, the implementation gives useful and understandable feedback. It follows the SIG idea of measuring objectively, classifying consistently, and interpreting the results in terms of everyday developer effort.
-
