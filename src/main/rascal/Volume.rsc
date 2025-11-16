@@ -46,7 +46,7 @@ public Volume calculateVolume(list[loc] locs) {
 /*
  * Process a single file and classify its lines
  */
-private tuple[int code, int comment, int blank, int total] processFile(loc fileLoc) {
+public tuple[int code, int comment, int blank, int total] processFile(loc fileLoc) {
     int codeCount = 0;
     int commentCount = 0;
     int blankCount = 0;
@@ -76,7 +76,7 @@ private tuple[int code, int comment, int blank, int total] processFile(loc fileL
 /*
  * Check if a line is a comment
  */
-private bool isCommentLine(str line, bool inMultiLine) {
+public bool isCommentLine(str line, bool inMultiLine) {
     return inMultiLine 
         || startsWith(line, "//")
         || startsWith(line, "/*")
@@ -88,7 +88,7 @@ private bool isCommentLine(str line, bool inMultiLine) {
 /*
  * Update multi-line comment state based on current line
  */
-private bool updateCommentState(str line, bool currentState) {
+public bool updateCommentState(str line, bool currentState) {
     if (startsWith(line, "/*") && !endsWith(line, "*/")) {
         return true;
     }
@@ -101,7 +101,7 @@ private bool updateCommentState(str line, bool currentState) {
 /*
  * SIG Volume Ranking (thresholds recognized by the SIG model)
  */
-private str calculateVolumeRank(int lines) {
+public str calculateVolumeRank(int lines) {
     for (<t, r> <- volumeSigScale) {
         if (lines <= t) {
             return r;

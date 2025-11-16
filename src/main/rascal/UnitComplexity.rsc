@@ -49,7 +49,7 @@ public UnitMetric calculateUnitComplexity(list[loc] files) {
 /**
   * Count cyclomatic complexity for a given method or constructor declaration.
   */
-private int countComplexity(Declaration d) {
+public int countComplexity(Declaration d) {
     int cc = 1; // base
 
     visit(d) {

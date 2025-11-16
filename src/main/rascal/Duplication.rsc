@@ -42,7 +42,7 @@ public Duplication calculateDuplication(list[loc] locs) {
 /**
  * Normalize lines by removing comments, blank lines, and extra whitespace.
  */
-private list[str] normalizeLines(loc file) {
+public list[str] normalizeLines(loc file) {
     list[str] result = [];
     bool inBlock = false;
 
@@ -75,7 +75,7 @@ private list[str] normalizeLines(loc file) {
 /**
  * Extract blocks of lines from a list of lines.
  */
-private list[list[str]] extractFileBlocks(list[str] lines) {
+public list[list[str]] extractFileBlocks(list[str] lines) {
     int blockSize = 6;
     list[list[str]] blocks = [];
 
@@ -92,7 +92,7 @@ private list[list[str]] extractFileBlocks(list[str] lines) {
 /**
  * Count duplicated lines across all files based on extracted blocks.
  */
-private int countDuplicatedLines(list[list[list[str]]] allBlocks,list[list[str]] fileLines) {
+public int countDuplicatedLines(list[list[list[str]]] allBlocks,list[list[str]] fileLines) {
     int blockSize = 6;
     map[list[str], list[tuple[int,int]]] occurrences = ();
 
@@ -140,7 +140,7 @@ private int countDuplicatedLines(list[list[list[str]]] allBlocks,list[list[str]]
 /*
  * SIG Duplication Ranking (thresholds recognized by the SIG model)
  */
-private str calculateDuplicationRank(real avg) {
+public str calculateDuplicationRank(real avg) {
     for (<t, r> <- duplicationSigScale) {
         if (avg <= t) {
             return r;

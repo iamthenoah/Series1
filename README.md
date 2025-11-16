@@ -1,6 +1,6 @@
 ## Series1
 
-### Open the Rascal Console and run:
+### Running
 
 - For HSQLDB:
 
@@ -27,4 +27,18 @@ The tool prints a structured report:
 - Unit size + risk profile
 - Unit complexity + risk profile
 - SIG ratings for each metric (and Maintainability)
-  
+
+### Testing
+
+For testing, we focus on the key raw metric used to define maintainability scores.
+
+- Open a new Rascal terminal
+
+```bash
+import util::Test;
+
+runTests("VolumeTests")
+runTests("DuplicationTests")
+runTests("UnitSizeTests")
+runTests("UnitComplexityTests")
+```
